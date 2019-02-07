@@ -3,6 +3,7 @@ package com.erolerten.spring5recipeapp.services;
 import com.erolerten.spring5recipeapp.converters.RecipeCommandToRecipe;
 import com.erolerten.spring5recipeapp.converters.RecipeToRecipeCommand;
 import com.erolerten.spring5recipeapp.domain.Recipe;
+import com.erolerten.spring5recipeapp.exceptions.NotFoundException;
 import com.erolerten.spring5recipeapp.repositories.RecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,4 +70,18 @@ public class RecipeServiceImplTest {
         verify(recipeRepository, never()).findAll();
 
     }
+
+    @Test(expected = NotFoundException.class)
+    public void getRecipeByIdTestNotFound() throws Exception {
+
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        Recipe recipeReturned = recipeService.findById(1L);
+
+        //should go boom
+    }
+
+
 }
